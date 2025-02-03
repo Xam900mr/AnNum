@@ -47,12 +47,15 @@ def metodo_montante(matriz, rest):
     for i in range(n):
         for j in range(n):
             inverversa[i][j] = inverversa[i][j] / Determinante 
-    
+
+    #Creamos una variable que almacene los valores de cada uno de las variable 
     Valores_resultantes = [0] * n
 
+    #Usando la inversa obtenemos los resultados de cada variable
     for i in range(n):
         for j in range(n):
             Valores_resultantes[i] = Valores_resultantes[i] + rest[j] * inverversa[i][j]
+        #Redondeamos los valores 
         Valores_resultantes[i] = round(Valores_resultantes[i])
 
     return Valores_resultantes
