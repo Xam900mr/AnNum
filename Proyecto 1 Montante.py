@@ -47,31 +47,25 @@ def metodo_montante(matriz, rest):
     for i in range(n):
         for j in range(n):
             inverversa[i][j] = inverversa[i][j] / Determinante 
-
-    #Creamos una variable que almacene los valores de cada uno de las variable 
+    
     Valores_resultantes = [0] * n
 
-    #Usando la inversa obtenemos los resultados de cada variable
     for i in range(n):
         for j in range(n):
             Valores_resultantes[i] = Valores_resultantes[i] + rest[j] * inverversa[i][j]
-        #Redondeamos los valores 
         Valores_resultantes[i] = round(Valores_resultantes[i])
 
     return Valores_resultantes
 
 def main():
-
+     
     matriz =([3, 6, -1],
     [7, -1, 2],
     [-2, -1, -1])
 
     valores = [25, 9, -6]
-
-    metodo_montante(matriz, valores)
-
     
-    """evaluador1 = False
+    evaluador1 = False
     print("Escriba el tamaño de la matriz:")
     while evaluador1 == False:
         try:
@@ -83,19 +77,32 @@ def main():
         except ValueError:
             print("ERROR: Debe ingresar un numero entero positivo. Intente nuevamente:")
     matriz = [[0 for _ in range(n)] for _ in range(n)]
+    valores = [0 for _ in range(n)]
     for i in range(n):
-        for j in range(n):
+        for j in range(n+1):
             evaluador2 = False
-            print(f"Ingrese el valor de X [{i+1}][{j+1}]:")
-            while evaluador2 == False:
-                try:
-                    matriz [i][j] = float(input())
-                    evaluador2 = True
-                except ValueError:
-                    print("ERROR: Debe ingresar un numero. Intente nuevamente:")
-                    
-        """
-                
+            if(j<n):
+                print(f"Ingrese el valor de X [{i+1}][{j+1}]:")
+                while evaluador2 == False:
+                    try:
+                        matriz [i][j] = float(input())
+                        evaluador2 = True
+                    except ValueError:
+                        print("ERROR: Debe ingresar un numero. Intente nuevamente:")
+            else:
+                print(f"Ingrese el valor de la funcion {i+1}:")
+                while evaluador2 == False:
+                    try:
+                        valores [i]= float(input())
+                        evaluador2 = True
+                    except ValueError:
+                        print("ERROR: Debe ingresar un numero. Intente nuevamente:")
+
+    resultado = metodo_montante(matriz, valores)
+
+    print("El resultado es el siguiente")
+    for i in range(3):
+        print(f"X{i+1} = {resultado[i]}")        
 
 if __name__ == "__main__":
     main()
