@@ -1,24 +1,61 @@
 def metodo_montante(matriz, rest):
+    #Obtenemos el tamano de la matriz
     n = len(rest)
-    identidad = [[1 if i == j else 0 for j in range(n)]for i in range(n)]
-    print(identidad)
 
+    #Generamos una matriz identidad de tamano n
+    identidad = [[1 if i == j else 0 for j in range(n)]for i in range(n)]
+
+    #Declaramos el primer pivote
+    pivote_ant = 1
+
+    #Creamos una iteracion para resolver la matriz
     for k in range(n):
-        print(k)
+
+        #Guardamos el valor de la posicion (k,k) que sera con el que estemos trabajando (pivote actual)
         actual = matriz[k][k] 
-        print (actual)
+
+        #Guardamos la columna k con la cual tambien estaremos trabajando
         otras = [fila[k] for fila in matriz]
-        print(otras)
+
+        #Creamos otra iteracion en la cual haremos que todas las pocisiones en la columna k a excepcion de (k,k) sean 0
         for j in range(n):
             if k != j:
-                matriz[k][j] = 0
-        print(matriz)
+                matriz[j][k] = 0
 
+        #Creamos otra iteracion donde los valores por arriba de (k,k) en la digonal sean igual a este
         for i in range(k):
-            matriz[i][i] = matriz[k][k]
-        print(matriz)
+            matriz[i][i] = actual
 
-    pass
+        # Modificamos los valores de la matriz usando el método de Montante
+        for i in range(n):
+            if i != k:
+                for j in range(k+1, n):
+                    matriz[i][j] = (actual * matriz[i][j] - otras[i] * matriz[k][j]) // pivote_ant 
+
+        #Realizamos el mismo procedimiento pero con la matriz identidad
+        for i in range(n):
+            if i != k:
+                for j in range(n):
+                    identidad[i][j] = (actual * identidad[i][j] - otras[i] * identidad[k][j]) // pivote_ant
+        #Modificamos el pivote anterior
+        pivote_ant = actual
+
+    #Una vez obtenida la determinanate y la Adjunta obtenemos la inversa
+    Determinante = pivote_ant
+    Adjunta = identidad
+    inverversa = Adjunta
+    for i in range(n):
+        for j in range(n):
+            inverversa[i][j] = inverversa[i][j] / Determinante 
+    
+    Valores_resultantes = [0] * n
+
+    for i in range(n):
+        for j in range(n):
+            Valores_resultantes[i] = Valores_resultantes[i] + rest[j] * inverversa[i][j]
+        Valores_resultantes[i] = round(Valores_resultantes[i])
+
+    return Valores_resultantes
 
 def main():
 
