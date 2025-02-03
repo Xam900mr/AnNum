@@ -14,6 +14,10 @@ def metodo_montante(matriz, rest):
                 matriz[k][j] = 0
         print(matriz)
 
+        for i in range(k):
+            matriz[i][i] = matriz[k][k]
+        print(matriz)
+
     pass
 
 def main():
