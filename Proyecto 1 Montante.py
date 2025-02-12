@@ -1,3 +1,33 @@
+def Calcular_detente(matriz):
+    n = len(matriz)
+    determinante = 0
+    if(n == 2):
+        a = 1
+        b = 1
+        for i in range(n):
+            for j in range(n):
+                if i == j:
+                    a *= matriz[i][j]
+                else:
+                    b *= matriz[i][j]
+        determinante = a - b
+    else:
+        new_matriz  = [[0 for _ in range(n-1)] for _ in range(n-1)]
+        for k in range(n):
+            for w in range(n-1):
+                y = 0
+                for m in range(n):
+                    if m != k:
+                        new_matriz[w][m-y] = matriz[w+1][m]
+                    else:
+                        y += 1
+            if k % 2 == 0:
+                determinante += matriz[0][k] * Calcular_detente(new_matriz)
+            else:
+                determinante -= matriz[0][k] * Calcular_detente(new_matriz)
+    return determinante
+
+
 def metodo_montante(matriz, rest):
     #Obtenemos el tamano de la matriz
     n = len(rest)
@@ -59,13 +89,14 @@ def metodo_montante(matriz, rest):
 
 def main():
      
-    matriz =([3, 6, -1],
+    '''matriz =([3, 6, -1],
     [7, -1, 2],
     [-2, -1, -1])
 
-    valores = [25, 9, -6]
-    
+    valores = [25, 9, -6]'''
+
     evaluador1 = False
+    evaluador3 = False
     print("Escriba el tamaño de la matriz:")
     while evaluador1 == False:
         try:
@@ -78,31 +109,38 @@ def main():
             print("ERROR: Debe ingresar un numero entero positivo. Intente nuevamente:")
     matriz = [[0 for _ in range(n)] for _ in range(n)]
     valores = [0 for _ in range(n)]
-    for i in range(n):
-        for j in range(n+1):
-            evaluador2 = False
-            if(j<n):
-                print(f"Ingrese el valor de X [{i+1}][{j+1}]:")
-                while evaluador2 == False:
-                    try:
-                        matriz [i][j] = float(input())
-                        evaluador2 = True
-                    except ValueError:
-                        print("ERROR: Debe ingresar un numero. Intente nuevamente:")
-            else:
-                print(f"Ingrese el valor de la funcion {i+1}:")
-                while evaluador2 == False:
-                    try:
-                        valores [i]= float(input())
-                        evaluador2 = True
-                    except ValueError:
-                        print("ERROR: Debe ingresar un numero. Intente nuevamente:")
+
+    while True:
+        for i in range(n):
+            for j in range(n+1):
+                evaluador2 = False
+                if(j<n):
+                    print(f"Ingrese el valor de X [{i+1}][{j+1}]:")
+                    while evaluador2 == False:
+                        try:
+                            matriz [i][j] = float(input())
+                            evaluador2 = True
+                        except ValueError:
+                            print("ERROR: Debe ingresar un numero. Intente nuevamente:")
+                else:
+                    print(f"Ingrese el valor de la funcion {i+1}:")
+                    while evaluador2 == False:
+                        try:
+                            valores [i] = float(input())
+                            evaluador2 = True
+                        except ValueError:
+                            print("ERROR: Debe ingresar un numero. Intente nuevamente:")
+        det = Calcular_detente(matriz)
+        if det != 0:
+            break
+        else:
+            print("ERROR: la matriz ingresada no es invertible por ende no es apta para el metodo montante, intente nuevamente con otra matriz")
 
     resultado = metodo_montante(matriz, valores)
 
     print("El resultado es el siguiente")
-    for i in range(3):
-        print(f"X{i+1} = {resultado[i]}")        
+    for i in range(n):
+        print(f"X{i+1} = {resultado[i]}")     
 
 if __name__ == "__main__":
     main()
