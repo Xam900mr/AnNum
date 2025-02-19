@@ -53,7 +53,6 @@ def metodo_montante(matriz, rest):
     for i in range(n):
         for j in range(n):
             Valores_resultantes[i] = Valores_resultantes[i] + rest[j] * inverversa[i][j]
-        Valores_resultantes[i] = round(Valores_resultantes[i])
 
     return Valores_resultantes
 
