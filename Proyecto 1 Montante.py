@@ -57,66 +57,127 @@ def metodo_montante(matriz, rest):
 
     return Valores_resultantes
 
-def main():
-     
-    '''matriz =([3, 6, -1],
-    [7, -1, 2],
-    [-2, -1, -1])
+def pivoteo(matriz, actual, siguiente):
 
-    valores = [25, 9, -6]'''
+    #Realizamos el cambio de filas en la matriz
+    matriz[actual], matriz[siguiente] = matriz[siguiente], matriz[actual]
 
-    evaluador1 = False
-    #Se ingresa el tamaño de la matriz
-    print("Escriba el tamaño de la matriz:")
-    #Se comprueba que el valor sea un numero entero positivo
-    while evaluador1 == False:
-        try:
-            n = int(input())
-            if n > 0:
-                evaluador1 = True
-            else:
-                print("ERROR: Debe de ser un numero positivo: Intente nuevamente:")
-        except ValueError:
-            print("ERROR: Debe ingresar un numero entero positivo. Intente nuevamente:")
-    #Se crea la Matriz junto a los valores de sus funciones
-    matriz = [[0 for _ in range(n)] for _ in range(n)]
-    valores = [0 for _ in range(n)]
+    return matriz
 
-    #Se evalua que la matriz sea invertible
-    while True:
-        for i in range(n):
-            for j in range(n+1):
-                evaluador2 = False
-                if(j<n):
-                    print(f"Ingrese el valor de X [{i+1}][{j+1}]:")
-                    #se comprueba que los valores dentro de la matriz sean numeros
-                    while evaluador2 == False:
-                        try:
-                            matriz [i][j] = float(input())
-                            evaluador2 = True
-                        except ValueError:
-                            print("ERROR: Debe ingresar un numero. Intente nuevamente:")
-                else:
-                    print(f"Ingrese el valor de la funcion {i+1}:")
-                    #se evalua que los valores de los resultados sean numeros
-                    while evaluador2 == False:
-                        try:
-                            valores [i] = float(input())
-                            evaluador2 = True
-                        except ValueError:
-                            print("ERROR: Debe ingresar un numero. Intente nuevamente:")
-        try:
-            #Se calcula el resultado por el metodo montante
-            resultado = metodo_montante(matriz, valores)
-            break
-        except ZeroDivisionError:
-            print("ERROR: la matriz ingresada no es invertible por ende no es apta para el metodo montante, intente nuevamente con otra matriz")
-
-    
-
-    print("El resultado es el siguiente")
+def validar (matriz):
+    n = len(matriz)
     for i in range(n):
-        print(f"X{i+1} = {resultado[i]}")     
+            if matriz[i][i] == 0:
+                return True
+    return False
+
+def solucionar_matriz(matriz, rest):
+    n = len(rest)
+    
+    #Validamos que la matriz no algun 0 en la diagonal
+    cero = validar(matriz)
+
+    #Si llegara a tener un 0 en la diagonal realizamos movimientos en las filas 
+
+    actual = 0 #Iniciamos el contador de la casilla que vamos a cambiar
+    siguiente = actual + 1 #Iniciamos el contador de la casilla con la cual la vamos a cambiar
+    iteraciones = 0 #iniciamos el contador de iteraciones para realizar los cambios
+
+    while cero and iteraciones < n:
+
+        #Llamamos a la funcion pivoteo que realizara los cambios en la matriz
+        matriz = pivoteo(matriz, actual, siguiente)
+
+        #Volvemos a validar matriz
+        cero = validar(matriz)
+
+        #Si hay 0 avanzamos en la matriz para realizar cambios
+        if cero:
+
+            #Si siguiente no ha llegado al ultima fila de la matriz avanzamos
+            if siguiente + 1 < n:
+                actual = actual +1
+                siguiente = actual +1
+
+            #Si no volvemos a cambiar desde la primer fila e incrementamos las iteraciones
+            else:
+                actual = 0
+                siguiente = actual +1
+                iteraciones += 1
+        #Salimos de la funcion
+
+    #Validamos que si podemos realizar el metodo motante
+    if cero:
+         print("ERROR: la matriz ingresada no es apta para el metodo montante, ya que no hay una combinacion de filas con una diagonal que no tenga 0, intente nuevamente con otra matriz")
+         return False
+    else:
+        #Se calcula el resultado por el metodo montante
+        resultado = metodo_montante(matriz, rest)
+        return resultado
+
+def main():
+     op = 1
+     while op == 1:
+        evaluador1 = False
+        #Se ingresa el tamaño de la matriz
+        print("Escriba el tamaño de la matriz:")
+        #Se comprueba que el valor sea un numero entero positivo
+        while evaluador1 == False:
+            try:
+                n = int(input())
+                if n > 0:
+                    evaluador1 = True
+                else:
+                    print("ERROR: Debe de ser un numero positivo: Intente nuevamente:")
+            except ValueError:
+                print("ERROR: Debe ingresar un numero entero positivo. Intente nuevamente:")
+        #Se crea la Matriz junto a los valores de sus funciones
+        matriz = [[0 for _ in range(n)] for _ in range(n)]
+        valores = [0 for _ in range(n)]
+
+        #Se evalua que la matriz sea invertible
+        while True:
+            for i in range(n):
+                for j in range(n+1):
+                    evaluador2 = False
+                    if(j<n):
+                        print(f"Ingrese el valor de X [{i+1}][{j+1}]:")
+                        #se comprueba que los valores dentro de la matriz sean numeros
+                        while evaluador2 == False:
+                            try:
+                                matriz [i][j] = float(input())
+                                evaluador2 = True
+                            except ValueError:
+                                print("ERROR: Debe ingresar un numero. Intente nuevamente:")
+                    else:
+                        print(f"Ingrese el valor de la funcion {i+1}:")
+                        #se evalua que los valores de los resultados sean numeros
+                        while evaluador2 == False:
+                            try:
+                                valores [i] = float(input())
+                                evaluador2 = True
+                            except ValueError:
+                                print("ERROR: Debe ingresar un numero. Intente nuevamente:")
+            try:
+                resultado = solucionar_matriz(matriz, valores)
+                break
+            except ZeroDivisionError:
+                print("ERROR: la matriz ingresada no es invertible por ende no es apta para el metodo montante, intente nuevamente con otra matriz")
+
+        if resultado:
+            print("El resultado es el siguiente")
+            for i in range(n):
+                print(f"X{i+1} = {resultado[i]}")  
+
+
+        opcion = input("Si / No\n")
+        print('¿Desea calcular otra matriz?', opcion)
+        if opcion == 'si' or opcion == 'Si' or opcion == 'SI' or opcion == 'sI':
+            op = 1
+        else:
+            op = 0
+
+        
 
 if __name__ == "__main__":
     main()
