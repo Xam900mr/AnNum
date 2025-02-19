@@ -169,7 +169,7 @@ def main():
                 print(f"X{i+1} = {resultado[i]}")  
 
 
-        print('¿Desea calcular otra matriz?', opcion)
+        print('¿Desea calcular otra matriz?')
         opcion = input("Si / No\n")
         if opcion == 'si' or opcion == 'Si' or opcion == 'SI' or opcion == 'sI':
             op = 1
