@@ -1,3 +1,4 @@
+import copy
 def metodo_montante(matriz, rest):
     #Obtenemos el tamano de la matriz
     n = len(rest)
@@ -43,18 +44,18 @@ def metodo_montante(matriz, rest):
     #Una vez obtenida la determinanate y la Adjunta obtenemos la inversa
     Determinante = pivote_ant
     Adjunta = identidad
-    inverversa = Adjunta
+    inverversa = copy.deepcopy(Adjunta)
     for i in range(n):
         for j in range(n):
             inverversa[i][j] = inverversa[i][j] / Determinante 
-    
+
     Valores_resultantes = [0] * n
 
     for i in range(n):
         for j in range(n):
-            Valores_resultantes[i] = Valores_resultantes[i] + rest[j] * inverversa[i][j]
+            Valores_resultantes[i] = Valores_resultantes[i] + (rest[j] * Adjunta[i][j])/Determinante
 
-    return Valores_resultantes
+    return Valores_resultantes, Determinante, Adjunta, inverversa
 
 def pivoteo(matriz, actual, siguiente):
 
@@ -158,15 +159,28 @@ def main():
                             except ValueError:
                                 print("ERROR: Debe ingresar un numero. Intente nuevamente:")
             try:
-                resultado = solucionar_matriz(matriz, valores)
+                resultado, determinante, adjunta, inversa = solucionar_matriz(matriz, valores)
                 break
             except ZeroDivisionError:
                 print("ERROR: la matriz ingresada no es invertible por ende no es apta para el metodo montante, intente nuevamente con otra matriz")
+            except TypeError:
+                print("")                
 
         if resultado:
             print("El resultado es el siguiente")
             for i in range(n):
-                print(f"X{i+1} = {resultado[i]}")  
+                print(f"X{i+1} = {resultado[i]}")
+            print(f"\nEl determinante de la matriz es:{determinante}\n")
+            print("\nLa adjunta de la matriz es:\n")  
+            for j in range(n):
+                for k in range(n):
+                    print(f"[{adjunta[j][k]}]", end=" ")
+                print("")
+            print("\nla inversa de la matriz es:\n")
+            for p in range(n):
+                for q in range(n):
+                    print(f"[{inversa[p][q]}]", end=" ")
+                print("")
 
 
         print('¿Desea calcular otra matriz?')
@@ -175,8 +189,6 @@ def main():
             op = 1
         else:
             op = 0
-
-        
 
 if __name__ == "__main__":
     main()
