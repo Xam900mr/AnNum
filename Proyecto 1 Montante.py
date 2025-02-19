@@ -1,3 +1,4 @@
+import copy
 def metodo_montante(matriz, rest):
     #Obtenemos el tamano de la matriz
     n = len(rest)
@@ -43,16 +44,16 @@ def metodo_montante(matriz, rest):
     #Una vez obtenida la determinanate y la Adjunta obtenemos la inversa
     Determinante = pivote_ant
     Adjunta = identidad
-    inverversa = Adjunta
+    inverversa = copy.deepcopy(Adjunta)
     for i in range(n):
         for j in range(n):
             inverversa[i][j] = inverversa[i][j] / Determinante 
-    
+
     Valores_resultantes = [0] * n
 
     for i in range(n):
         for j in range(n):
-            Valores_resultantes[i] = Valores_resultantes[i] + rest[j] * inverversa[i][j]
+            Valores_resultantes[i] = Valores_resultantes[i] + (rest[j] * Adjunta[i][j])/Determinante
 
     return Valores_resultantes
 
