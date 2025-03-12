@@ -1,28 +1,26 @@
 def Biergevieta(coeficientes,grado):
-    a = coeficientes
-    X = [0] * grado
-    X[0] = - a[grado] / a[grado-1]
-    for j in range(grado):
-        while True:
+    a = coeficientes # Se copian los coeficientes del polinomio
+    X = [0] * grado  # Se crea una lista para almacenar las raíces (inicialmente llena de ceros)
+    for j in range(grado): #Iteracion para encontrar raices
+        X[j] = - a[-1] / a[-2]  # Primera aproximación de la raíz
+        while True:  #Se repite hasta encontrar la raiz
             P = [0] * len(a)
             Pprim = [0] * (len(a)-1)
-            for i in range(grado):
+            for i in range(len(a)):  #Calcula cada P y P-prima
                 if(i>0):
                     P[i] = P[i-1] * X[j] + a[i]
                 else:
                     P[i] = a[i]
-                if (i != grado-1):
+                if (i != len(a)-1):
                     if(i>0): 
                         Pprim[i] = Pprim[i-1] * X[j] + P[i]
                     else:
                         Pprim[i] = P[i]
-            if (P[len(P)-1] != 0):
-                X[j] = X[j] - (P[len(P)-1] / Pprim[len(Pprim)-1])
+            if (P[-1] != 0): #Detecta si encontro la raiz
+                X[j] = X[j] - (P[-1] / Pprim[-1])
             else:
                 break
-        a = [0] * (len(P)-1)
-        for i in range(len(P)-1):
-            a[i] = P[i]
+        a = P[:-1]
     return X
 
 def lectura_ecuacion():
