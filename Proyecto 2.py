@@ -1,12 +1,19 @@
 def Biergevieta(coeficientes,grado):
     a = coeficientes # Se copian los coeficientes del polinomio
     X = [0] * grado  # Se crea una lista para almacenar las raíces (inicialmente llena de ceros)
+    iteraciones = 0
+    max_iteraciones = 1000  # Límite de iteraciones
     for j in range(grado): #Iteracion para encontrar raices
         try:
             X[j] = - a[-1] / a[-2]  # Primera aproximación de la raíz
         except ZeroDivisionError:
             print("La funcion tiene soluciones imaginarias o no es apta para este metodo")
+            return None
         while True:  #Se repite hasta encontrar la raiz
+            if iteraciones > max_iteraciones:
+                print("El método no converge.")
+                return None
+            iteraciones += 1
             P = [0] * len(a)
             Pprim = [0] * (len(a)-1)
             for i in range(len(a)):  #Calcula cada P y P-prima
@@ -20,7 +27,17 @@ def Biergevieta(coeficientes,grado):
                     else:
                         Pprim[i] = P[i]
             if (P[-1] != 0): #Detecta si encontro la raiz
-                X[j] = X[j] - (P[-1] / Pprim[-1])
+                try:
+                    X[j] = X[j] - (P[-1] / Pprim[-1])
+                except ZeroDivisionError:
+                    if X[j-1]!=0:
+                        print("La funcion tiene", grado - j, "soluciones imaginarias")
+                        Y = [0]*(j)
+                        for t in range(j):
+                            Y[t] = X[t]
+                        return Y
+                    else:
+                        print("La funcion tiene soluciones imaginarias o no es apta para este metodo")
             else:
                 break
         a = P[:-1]
@@ -55,8 +72,11 @@ def lectura_ecuacion():
 def main():
     coeficientes,grado = lectura_ecuacion()
     resultados = Biergevieta(coeficientes,grado)
-    for i in range(len(resultados)):
-        print(f"x{i+1} = {resultados[i]}")
+    try:
+        for i in range(len(resultados)):
+            print(f"x{i+1} = {resultados[i]}")
+    except TypeError:
+        print("Intente con otro valor")
 
 if __name__ == "__main__":
     main()
