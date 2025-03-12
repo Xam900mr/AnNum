@@ -30,8 +30,14 @@ def Biergevieta(coeficientes,grado):
                 try:
                     X[j] = X[j] - (P[-1] / Pprim[-1])
                 except ZeroDivisionError:
-                    print("La funcion tiene soluciones imaginarias o no es apta para este metodo")
-                    return None
+                    if X[j-1]!=0:
+                        print("La funcion tiene", grado - j, "soluciones imaginarias")
+                        Y = [0]*(j)
+                        for t in range(j):
+                            Y[t] = X[t]
+                        return Y
+                    else:
+                        print("La funcion tiene soluciones imaginarias o no es apta para este metodo")
             else:
                 break
         a = P[:-1]
