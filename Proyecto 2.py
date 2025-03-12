@@ -60,7 +60,7 @@ def lectura_ecuacion():
             try:
                 coef = float(input(f"Ingrese el coeficiente de x^{grado-i}: "))
                 if i == 0 and coef == 0:
-                    print(f"El valor de x^{i} debe ser distinto de 0")
+                    print(f"El valor de x^{grado} debe ser distinto de 0")
                 else:    
                     coeficientes.append(coef)
                     break
@@ -70,13 +70,22 @@ def lectura_ecuacion():
     return coeficientes, grado
 
 def main():
-    coeficientes,grado = lectura_ecuacion()
-    resultados = Biergevieta(coeficientes,grado)
-    try:
-        for i in range(len(resultados)):
-            print(f"x{i+1} = {resultados[i]}")
-    except TypeError:
-        print("Intente con otro valor")
+    op = 1
+    while op == 1:
+        coeficientes,grado = lectura_ecuacion()
+        resultados = Biergevieta(coeficientes,grado)
+        try:
+            for i in range(len(resultados)):
+                print(f"x{i+1} = {resultados[i]}")
+        except TypeError:
+            print("Intente con otro valor")
+        
+        print('¿Desea calcular otro polinomio?')
+        opcion = input("Si / No\n")
+        if opcion == 'si' or opcion == 'Si' or opcion == 'SI' or opcion == 'sI':
+            op = 1
+        else:
+            op = 0
 
 if __name__ == "__main__":
     main()
