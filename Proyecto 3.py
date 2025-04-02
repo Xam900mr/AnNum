@@ -54,26 +54,33 @@ def lectura_datos():
             else:
                 break
     
-    while True:
-        try:
-            X_estimar = float(input("Ingrese el valor de x para el cual se quiere interpolar el valor de y\n x = "))
-            if any(X_estimar == dato[0] for dato in Datos):  # Verifica si x ya existe en Datos
-                print("ERROR: El valor de x ya fue ingresado. Ingrese un valor diferente.")
-                continue
-            break
-        except ValueError:
-            print("ERROR: ingrese un valor numerico")
     
-    
-    return Datos, X_estimar
+    return Datos
 
 def main():
     while True:
-        Tabla_Valores, X_estimar = lectura_datos()
-        Y_estimada = inter_lagrange(Tabla_Valores, X_estimar)
-        print(f'El valor estimado de Y({X_estimar}) es de : {Y_estimada}')
+        Tabla_Valores = lectura_datos()
+        while True:
+            while True:
+                try:
+                    X_estimar = float(input("Ingrese el valor de x para el cual se quiere interpolar el valor de y\n x = "))
+                    if any(X_estimar == dato[0] for dato in Tabla_Valores):  # Verifica si x ya existe en Datos
+                        print("ERROR: El valor de x ya fue ingresado. Ingrese un valor diferente.")
+                        continue
+                    break
+                except ValueError:
+                    print("ERROR: ingrese un valor numerico")
+            Y_estimada = inter_lagrange(Tabla_Valores, X_estimar)
+            print(f'El valor estimado de Y({X_estimar}) es de : {Y_estimada}')
 
-        print('¿Desea ingresar otros datos para interpolar?\n')
+            print('¿Desea ingresar otro valor de x a estimar?')
+            opcion = input("Si / No\n")
+            if opcion == 'si' or opcion == 'Si' or opcion == 'SI' or opcion == 'sI':
+                continue
+            else:
+                break
+
+        print('¿Desea ingresar otros datos para interpolar?')
         opcion = input("Si / No\n")
         if opcion == 'si' or opcion == 'Si' or opcion == 'SI' or opcion == 'sI':
             continue
